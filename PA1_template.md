@@ -1,9 +1,4 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
@@ -24,6 +19,22 @@ The total number of steps is calculated for each day below using the summarize f
 
 ```r
     library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+## 
+## The following object is masked from 'package:stats':
+## 
+##     filter
+## 
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
     compl<-complete.cases(my_data)
     daily_sum<-summarize(group_by(my_data[compl,],date),SumSteps=sum(steps))
 ```
@@ -36,7 +47,7 @@ The total number of steps is plotted below in a histogram:
          col="lightblue",breaks=7,ylim=c(0,30),labels=TRUE)
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
 The mean of the of the total number of steps is:
 
@@ -71,7 +82,7 @@ The plot below shows the average daily activity of all days for the specified in
     axis(side=1,at=c(0,400,800,1200,1600,2000,2400))
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
 
 The 5-minute interval with the highest step average is:
 
@@ -98,7 +109,7 @@ The number of rows that contain missing values and which are denoted in this dat
 ## [1] 2304
 ```
 
-The missing values are substituted with the average of the interval they fall in and the new dataset is stored in the variable subNA_data.
+The missing values are substituted with the average of the interval they fall in rounded to integer values and the new dataset is stored in the variable subNA_data.
 
 
 ```r
@@ -108,7 +119,7 @@ The missing values are substituted with the average of the interval they fall in
         
         if (is.na(my_data[i,]$steps)){
             n<-which(avg_steps$interval==my_data[i,]$interval)
-            subNA_data[i,]$steps<-avg_steps[n,]$AvgSteps
+            subNA_data[i,]$steps<-round(avg_steps[n,]$AvgSteps)
             }
         
         else{}
@@ -129,7 +140,7 @@ The new dataset with the replaced missing values is used to recalculate the sum 
          labels=TRUE)
 ```
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png) 
 
 The corresponding mean of the daily total number of steps is given by:
 
@@ -138,7 +149,7 @@ The corresponding mean of the daily total number of steps is given by:
 ```
 
 ```
-## [1] 10766.19
+## [1] 10765.64
 ```
 
 and the corresponding median is as follows:
@@ -148,10 +159,10 @@ and the corresponding median is as follows:
 ```
 
 ```
-## [1] 10766.19
+## [1] 10762
 ```
 
-These new values obtained for the mean and median differ from the values we obtained earlier where the missing values were ignored instead of substituted with the average of the steps in the specific interval. It is noticed that while the mean did not change, the median is now equal to the mean.
+These new values obtained for the mean and median differ from the values we obtained earlier where the missing values were ignored instead of substituted with the rounded average of the steps in the specific interval. 
 Inputing missing data increased the estimates of the total daily number of steps and that is expected.
 
 ## Are there differences in activity patterns between weekdays and weekends?
@@ -173,4 +184,6 @@ The following plot shows the distribution of the average number of steps for eac
     print(p)
 ```
 
-![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-14-1.png) 
+
+The plot above shows that the patterns in average number of steps per interval are a bit different however the interval with the highest average is still the same for both.

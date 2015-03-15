@@ -70,7 +70,7 @@ The number of rows that contain missing values and which are denoted in this dat
     length(my_data$interval)-length(my_data[compl,]$interval)
 ```
 
-The missing values are substituted with the average of the interval they fall in and the new dataset is stored in the variable subNA_data.
+The missing values are substituted with the average of the interval they fall in rounded to integer values and the new dataset is stored in the variable subNA_data.
 
 ```{r,echo=TRUE}
     subNA_data<-my_data
@@ -79,7 +79,7 @@ The missing values are substituted with the average of the interval they fall in
         
         if (is.na(my_data[i,]$steps)){
             n<-which(avg_steps$interval==my_data[i,]$interval)
-            subNA_data[i,]$steps<-avg_steps[n,]$AvgSteps
+            subNA_data[i,]$steps<-round(avg_steps[n,]$AvgSteps)
             }
         
         else{}
@@ -109,7 +109,7 @@ and the corresponding median is as follows:
     median(ndaily_sum$SumSteps)
 ```
 
-These new values obtained for the mean and median differ from the values we obtained earlier where the missing values were ignored instead of substituted with the average of the steps in the specific interval. It is noticed that while the mean did not change, the median is now equal to the mean.
+These new values obtained for the mean and median differ from the values we obtained earlier where the missing values were ignored instead of substituted with the rounded average of the steps in the specific interval. 
 Inputing missing data increased the estimates of the total daily number of steps and that is expected.
 
 ## Are there differences in activity patterns between weekdays and weekends?
@@ -128,3 +128,5 @@ The following plot shows the distribution of the average number of steps for eac
     facet_grid(Day~.)+ylab("Average number of Steps")+ggtitle("The Average Number of Steps for each Interval for both Weekdays and Weekends")+xlab("Interval")
     print(p)
 ```
+
+The plot above shows that the patterns in average number of steps per interval are a bit different however the interval with the highest average is still the same for both.
